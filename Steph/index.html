@@ -1,0 +1,1236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Hey My Honor 💖</title>
+
+  <style>
+    /* =========================================================
+       🎨 EASY CUSTOMIZATION (edit these variables)
+       ========================================================= */
+    :root{
+      /* Brand */
+      --accent: #ff4fb8;
+      --accent-2: #7c5cff;
+      --accent-3: #3dd6c6;
+
+      /* Day theme */
+      --bg-1: #fff3f7;
+      --bg-2: #f3f5ff;
+      --bg-3: #eefcff;
+
+      --card: rgba(255,255,255,0.72);
+      --paper: rgba(255,255,255,0.88);
+      --ink: #1b1d2a;
+      --muted: rgba(27,29,42,0.68);
+      --stroke: rgba(27,29,42,0.12);
+
+      /* Effects */
+      --shadow: 0 18px 55px rgba(15, 18, 35, 0.12);
+      --shadow-2: 0 10px 26px rgba(15, 18, 35, 0.16);
+
+      /* Layout */
+      --radius-xl: 26px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --maxw: 980px;
+
+      /* Motion */
+      --ease: cubic-bezier(.2,.9,.2,1);
+      --duration: 900ms;
+
+      /* Decorative intensity (0..1) */
+      --sparkle-opacity: 0.35;
+      --float-opacity: 0.35;
+    }
+
+    /* Night theme (toggle adds [data-theme="night"] to html) */
+    html[data-theme="night"]{
+      --bg-1: #0f1020;
+      --bg-2: #141631;
+      --bg-3: #0c1b24;
+
+      --card: rgba(18, 20, 42, 0.60);
+      --paper: rgba(22, 24, 52, 0.82);
+      --ink: #f4f2ff;
+      --muted: rgba(244,242,255,0.70);
+      --stroke: rgba(244,242,255,0.14);
+
+      --shadow: 0 22px 65px rgba(0,0,0,0.40);
+      --shadow-2: 0 12px 30px rgba(0,0,0,0.46);
+
+      --sparkle-opacity: 0.28;
+      --float-opacity: 0.28;
+    }
+
+    /* =========================================================
+       Base
+       ========================================================= */
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--ink);
+      overflow-x:hidden;
+      background:
+        radial-gradient(1200px 700px at 15% 10%, color-mix(in oklab, var(--accent) 22%, transparent) 0%, transparent 60%),
+        radial-gradient(1100px 650px at 85% 30%, color-mix(in oklab, var(--accent-2) 18%, transparent) 0%, transparent 62%),
+        radial-gradient(900px 600px at 60% 90%, color-mix(in oklab, var(--accent-3) 15%, transparent) 0%, transparent 60%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
+      position:relative;
+      min-height:100%;
+    }
+
+    /* CSS-only grain / noise overlay */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity: 0.10;
+      mix-blend-mode: soft-light;
+      background:
+        repeating-linear-gradient(0deg,
+          rgba(255,255,255,0.14) 0px,
+          rgba(255,255,255,0.14) 1px,
+          rgba(0,0,0,0.10) 2px,
+          rgba(0,0,0,0.10) 3px
+        );
+      filter: contrast(110%) brightness(105%);
+    }
+
+    a, button { -webkit-tap-highlight-color: transparent; }
+    .sr-only{
+      position:absolute!important;
+      width:1px;height:1px;
+      padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);
+      white-space:nowrap;border:0;
+    }
+
+    :focus-visible{
+      outline: 3px solid color-mix(in oklab, var(--accent) 55%, white);
+      outline-offset: 3px;
+      border-radius: 10px;
+    }
+
+    /* =========================================================
+       Layout shell
+       ========================================================= */
+    .wrap{
+      width:min(var(--maxw), 100% - 32px);
+      margin-inline:auto;
+      padding: 22px 0 70px;
+      position:relative;
+      z-index:1;
+    }
+
+    header.topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 10px 2px 18px;
+    }
+
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      user-select:none;
+    }
+    .brand .dot{
+      width:12px;height:12px;border-radius:999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 16%, transparent);
+    }
+    .brand .name{
+      font-weight: 720;
+      letter-spacing: 0.2px;
+      font-size: 14px;
+      color: color-mix(in oklab, var(--ink) 85%, transparent);
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--card) 85%, transparent);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.06);
+      backdrop-filter: blur(10px);
+    }
+
+    .toggle{
+      appearance:none;
+      width: 46px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--paper) 70%, transparent);
+      position:relative;
+      cursor:pointer;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+      transition: transform 120ms var(--ease), background 250ms var(--ease);
+    }
+    .toggle:active{ transform: scale(0.98); }
+    .toggle::before{
+      content:"";
+      position:absolute;
+      top:3px; left:3px;
+      width: 22px; height: 22px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, white), color-mix(in oklab, var(--accent-2) 45%, white));
+      box-shadow: 0 10px 18px rgba(0,0,0,0.20);
+      transition: transform 280ms var(--ease);
+    }
+    html[data-theme="night"] .toggle::before{
+      transform: translateX(18px);
+      background: linear-gradient(135deg, color-mix(in oklab, var(--accent-2) 55%, #1a1b3a), color-mix(in oklab, var(--accent) 40%, #10112a));
+    }
+
+    .pill-label{
+      font-size: 12.5px;
+      color: var(--muted);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    /* =========================================================
+       Floating accents (hearts/sparkles)
+       ========================================================= */
+    .floaters{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      opacity: var(--float-opacity);
+    }
+
+    .floater{
+      position:absolute;
+      width: 18px;
+      height: 18px;
+      filter: drop-shadow(0 10px 16px rgba(0,0,0,0.16));
+      opacity: 0.9;
+      transform: translateZ(0);
+      animation: drift 10s var(--ease) infinite;
+    }
+    .floater::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.85), rgba(255,255,255,0) 55%),
+                  linear-gradient(135deg, color-mix(in oklab, var(--accent) 70%, transparent), color-mix(in oklab, var(--accent-2) 60%, transparent));
+      clip-path: path("M9 16 C3 12, 2 7, 5 5 C7 3, 9 4, 9 6 C9 4, 11 3, 13 5 C16 7, 15 12, 9 16 Z");
+      border-radius: 6px;
+    }
+    .floater.sparkle::before{
+      clip-path: polygon(50% 0%, 61% 35%, 98% 50%, 61% 65%, 50% 100%, 39% 65%, 2% 50%, 39% 35%);
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0) 55%),
+                  linear-gradient(135deg, color-mix(in oklab, var(--accent-3) 60%, transparent), color-mix(in oklab, var(--accent-2) 50%, transparent));
+      border-radius: 0;
+    }
+
+    @keyframes drift{
+      0%   { transform: translate3d(0,0,0) rotate(0deg); }
+      50%  { transform: translate3d(0,-18px,0) rotate(10deg); }
+      100% { transform: translate3d(0,0,0) rotate(0deg); }
+    }
+
+    /* =========================================================
+       Card + sections
+       ========================================================= */
+    .card{
+      border: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--card) 92%, transparent);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius-xl);
+      overflow:hidden;
+    }
+
+    .hero{
+      padding: 28px 22px 22px;
+      display:grid;
+      gap:16px;
+      position:relative;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(700px 260px at 10% 0%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%),
+        radial-gradient(700px 260px at 90% 0%, color-mix(in oklab, var(--accent-2) 18%, transparent), transparent 60%);
+      pointer-events:none;
+      opacity: 0.9;
+      mask: linear-gradient(#000 0%, rgba(0,0,0,0.65) 30%, transparent 72%);
+    }
+
+    .kicker{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--paper) 55%, transparent);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+      font-size: 12.5px;
+      color: var(--muted);
+      user-select:none;
+      white-space:nowrap;
+    }
+    .badge .heart{
+      width: 14px; height: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      clip-path: path("M7 12 C2 8, 2 5, 4 4 C5 3, 7 3.5, 7 5 C7 3.5, 9 3, 10 4 C12 5, 12 8, 7 12 Z");
+      box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 16%, transparent);
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(26px, 5vw, 44px);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      font-size: clamp(14px, 2.8vw, 17px);
+      line-height: 1.45;
+      max-width: 62ch;
+    }
+
+    .ctaRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top: 4px;
+    }
+
+    .btn{
+      border: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--paper) 70%, transparent);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 650;
+      font-size: 14.5px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition: transform 120ms var(--ease), box-shadow 250ms var(--ease), background 250ms var(--ease);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+      user-select:none;
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, color-mix(in oklab, var(--accent) 70%, white), color-mix(in oklab, var(--accent-2) 65%, white));
+      border-color: color-mix(in oklab, var(--accent) 30%, transparent);
+      color: color-mix(in oklab, white 92%, #111);
+      box-shadow: 0 16px 26px rgba(255, 79, 184, 0.20), 0 12px 20px rgba(0,0,0,0.10);
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 18px 30px rgba(0,0,0,0.12);
+    }
+    .btn.primary:hover{
+      box-shadow: 0 22px 34px rgba(255, 79, 184, 0.26), 0 14px 24px rgba(0,0,0,0.12);
+    }
+    .btn:active{ transform: translateY(1px) scale(0.99); }
+    .btn .icon{
+      width: 18px; height: 18px; display:inline-block;
+    }
+
+    .divider{
+      height: 1px;
+      background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--stroke) 92%, transparent), transparent);
+      margin: 0;
+    }
+
+    section{
+      padding: 22px;
+    }
+
+    .sectionTitle{
+      margin: 0 0 10px;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      color: color-mix(in oklab, var(--ink) 88%, transparent);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .hint{
+      font-size: 12.5px;
+      color: var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px dashed color-mix(in oklab, var(--stroke) 85%, transparent);
+      background: color-mix(in oklab, var(--paper) 55%, transparent);
+      user-select:none;
+    }
+
+    /* =========================================================
+       Letter / note styling
+       ========================================================= */
+    .letter{
+      position:relative;
+      border-radius: var(--radius-lg);
+      border: 1px solid color-mix(in oklab, var(--stroke) 92%, transparent);
+      background:
+        linear-gradient(180deg, color-mix(in oklab, var(--paper) 92%, transparent), color-mix(in oklab, var(--paper) 75%, transparent));
+      box-shadow: var(--shadow-2);
+      overflow:hidden;
+    }
+
+    .letter::before{
+      /* subtle paper fibers */
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(90deg,
+          rgba(0,0,0,0.02) 0px,
+          rgba(0,0,0,0.02) 1px,
+          rgba(255,255,255,0.02) 2px,
+          rgba(255,255,255,0.02) 4px
+        );
+      opacity: 0.25;
+      pointer-events:none;
+      mix-blend-mode: overlay;
+    }
+
+    .letterHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid color-mix(in oklab, var(--stroke) 75%, transparent);
+    }
+
+    .toLine{
+      font-weight: 720;
+      letter-spacing: -0.01em;
+      display:flex;
+      align-items:baseline;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .toLine small{
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+
+    .sprinkleBtn{
+      border: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--paper) 70%, transparent);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 650;
+      font-size: 13px;
+      cursor:pointer;
+      transition: transform 120ms var(--ease), box-shadow 250ms var(--ease), background 250ms var(--ease);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+    }
+    .sprinkleBtn:hover{ transform: translateY(-1px); }
+    .sprinkleBtn:active{ transform: translateY(1px) scale(0.99); }
+
+    .letterBody{
+      padding: 16px;
+      line-height: 1.65;
+      font-size: 14.8px;
+      color: color-mix(in oklab, var(--ink) 92%, transparent);
+      white-space: pre-wrap;   /* preserve formatting + line breaks */
+    }
+
+    .letterBody::selection{
+      background: color-mix(in oklab, var(--accent) 30%, transparent);
+    }
+
+    /* =========================================================
+       Video player
+       ========================================================= */
+    .videoFrame{
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--stroke);
+      overflow:hidden;
+      background: rgba(0,0,0,0.08);
+      box-shadow: var(--shadow-2);
+      position:relative;
+    }
+
+    video{
+  display:block;
+  width:100%;
+  height: min(70vh, 520px);   /* takes more screen height */
+  object-fit: cover;         /* fills the frame (may crop edges a bit) */
+  background: rgba(0,0,0,0.2);
+}
+
+
+    .controls{
+      display:grid;
+      grid-template-columns: auto auto 1fr auto;
+      gap:10px;
+      align-items:center;
+      padding: 12px;
+      background: color-mix(in oklab, var(--card) 85%, transparent);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--stroke);
+    }
+
+    .ctlBtn{
+      border: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--paper) 70%, transparent);
+      color: var(--ink);
+      border-radius: 12px;
+      padding: 10px 10px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width: 42px;
+      transition: transform 120ms var(--ease), background 250ms var(--ease), box-shadow 250ms var(--ease);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+    }
+    .ctlBtn:hover{ transform: translateY(-1px); }
+    .ctlBtn:active{ transform: translateY(1px) scale(0.99); }
+    .ctlBtn[aria-pressed="true"]{
+      background: linear-gradient(135deg, color-mix(in oklab, var(--accent-3) 35%, var(--paper)), color-mix(in oklab, var(--accent-2) 25%, var(--paper)));
+    }
+
+    .progressWrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 0;
+    }
+
+    .time{
+      font-variant-numeric: tabular-nums;
+      font-size: 12.5px;
+      color: var(--muted);
+      white-space:nowrap;
+      user-select:none;
+    }
+
+    .progress{
+      position:relative;
+      height: 10px;
+      border-radius: 999px;
+      background: color-mix(in oklab, var(--paper) 65%, transparent);
+      border: 1px solid color-mix(in oklab, var(--stroke) 80%, transparent);
+      overflow:hidden;
+      flex:1;
+      cursor:pointer;
+    }
+    .progress::before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(90deg,
+        color-mix(in oklab, var(--accent) 65%, transparent),
+        color-mix(in oklab, var(--accent-2) 55%, transparent)
+      );
+      transform: scaleX(var(--p, 0));
+      transform-origin: left;
+      transition: transform 100ms linear;
+      border-radius: 999px;
+    }
+    .progress::after{
+      content:"";
+      position:absolute;
+      left: calc(var(--p, 0) * 100%);
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px; height: 14px;
+      border-radius: 999px;
+      background: color-mix(in oklab, white 75%, var(--accent));
+      box-shadow: 0 10px 14px rgba(0,0,0,0.18);
+      border: 1px solid color-mix(in oklab, var(--stroke) 75%, transparent);
+      opacity: 0.95;
+    }
+
+    .caption{
+      margin-top: 10px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 13px;
+      user-select:none;
+    }
+
+    /* =========================================================
+       Closing
+       ========================================================= */
+    .closing{
+      display:grid;
+      gap:10px;
+      text-align:center;
+      padding: 24px 22px 28px;
+    }
+    .closing .line{
+      font-size: 15px;
+      color: color-mix(in oklab, var(--ink) 88%, transparent);
+    }
+    .closing .sig{
+      font-weight: 780;
+      letter-spacing: 0.02em;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    .closing .sig .miniHeart{
+      width: 14px; height: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      clip-path: path("M7 12 C2 8, 2 5, 4 4 C5 3, 7 3.5, 7 5 C7 3.5, 9 3, 10 4 C12 5, 12 8, 7 12 Z");
+      opacity: 0.9;
+    }
+    footer{
+      text-align:center;
+      padding: 12px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      user-select:none;
+    }
+
+    /* =========================================================
+       Entrance animation
+       ========================================================= */
+    .reveal{
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+      animation: enter var(--duration) var(--ease) forwards;
+    }
+    .reveal.delay1{ animation-delay: 120ms; }
+    .reveal.delay2{ animation-delay: 220ms; }
+    .reveal.delay3{ animation-delay: 320ms; }
+
+    @keyframes enter{
+      to { opacity:1; transform: translateY(0) scale(1); }
+    }
+
+    /* =========================================================
+       Sprinkle hearts burst
+       ========================================================= */
+    .burst{
+      position:fixed;
+      left:0; top:0;
+      pointer-events:none;
+      z-index: 9999;
+    }
+
+    .particle{
+      position:absolute;
+      width: 14px; height: 14px;
+      transform: translate(-50%,-50%);
+      opacity: 0;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 10px 14px rgba(0,0,0,0.16));
+    }
+    .particle::before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      clip-path: path("M7 12 C2 8, 2 5, 4 4 C5 3, 7 3.5, 7 5 C7 3.5, 9 3, 10 4 C12 5, 12 8, 7 12 Z");
+    }
+
+    .particle.spark::before{
+      clip-path: polygon(50% 0%, 62% 34%, 100% 50%, 62% 66%, 50% 100%, 38% 66%, 0% 50%, 38% 34%);
+      background: linear-gradient(135deg, var(--accent-3), var(--accent-2));
+    }
+
+    /* =========================================================
+       Responsive tweaks
+       ========================================================= */
+    @media (min-width: 720px){
+      .hero{ padding: 34px 32px 26px; }
+      section{ padding: 26px 32px; }
+      .letterBody{ padding: 18px 20px; font-size: 15.2px; }
+      .letterHead{ padding: 16px 20px 14px; }
+    }
+
+    /* =========================================================
+       Reduced motion support
+       ========================================================= */
+    @media (prefers-reduced-motion: reduce){
+      *{ scroll-behavior: auto !important; }
+      .reveal{ animation:none; opacity:1; transform:none; }
+      .floater{ animation:none; }
+      .progress::before{ transition:none; }
+    }
+
+    /* Smooth scroll (disabled by reduce-motion above via JS fallback too) */
+    html{ scroll-behavior: smooth; }
+  </style>
+</head>
+
+<body>
+  <!-- Floating accents -->
+  <div class="floaters" aria-hidden="true" id="floaters">
+    <div class="floater" style="left: 8%; top: 22%; animation-duration: 11s; animation-delay: -2s;"></div>
+    <div class="floater sparkle" style="left: 18%; top: 68%; width: 14px; height: 14px; animation-duration: 9.5s; animation-delay: -5s;"></div>
+    <div class="floater" style="left: 42%; top: 14%; width: 16px; height: 16px; animation-duration: 10.5s; animation-delay: -3.2s;"></div>
+    <div class="floater sparkle" style="left: 65%; top: 28%; width: 16px; height: 16px; animation-duration: 12.2s; animation-delay: -1.1s;"></div>
+    <div class="floater" style="left: 78%; top: 62%; width: 20px; height: 20px; animation-duration: 13.3s; animation-delay: -6s;"></div>
+    <div class="floater sparkle" style="left: 90%; top: 18%; width: 14px; height: 14px; animation-duration: 9.7s; animation-delay: -4.4s;"></div>
+  </div>
+
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand" aria-label="Page header">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="name">A little to Stephanie</span>
+      </div>
+
+      <div class="actions">
+        <div class="pill" role="group" aria-label="Theme toggle">
+          <span class="pill-label" id="themeLabel">Day</span>
+          <button class="toggle" id="themeToggle" type="button" aria-label="Toggle day and night theme" aria-pressed="false"></button>
+        </div>
+      </div>
+    </header>
+
+    <main class="card reveal" id="top">
+      <!-- 1) Landing view -->
+      <div class="hero">
+        <div class="kicker">
+          <span class="badge"><span class="heart" aria-hidden="true"></span> For <strong>Stephanie Huno</strong></span>
+          <span class="badge">💛 “My Honor”</span>
+        </div>
+
+        <h1 class="reveal delay1">Hey <span style="color: color-mix(in oklab, var(--accent) 70%, var(--ink));">My Honor</span> 💖</h1>
+        <p class="subtitle reveal delay2">I made this for you</p>
+
+        <div class="ctaRow reveal delay3">
+          <button class="btn primary" id="openMsg" type="button" aria-label="Open my message">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 8.5L12 13.7L20 8.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5.5 6.5H18.5C19.328 6.5 20 7.172 20 8V17.5C20 18.328 19.328 19 18.5 19H5.5C4.672 19 4 18.328 4 17.5V8C4 7.172 4.672 6.5 5.5 6.5Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            Open my message
+          </button>
+
+          <button class="btn" id="skipToVideo" type="button" aria-label="Skip to video">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 8L16 12L9 16V8Z" fill="currentColor"/>
+                <path d="M19 7V17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </span>
+            Go to video
+          </button>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- 2) Message section -->
+      <section id="message">
+        <div class="sectionTitle">
+          <span>Message</span>
+          <span class="hint" aria-hidden="true">Tap to sprinkle hearts ✨</span>
+        </div>
+
+        <div class="letter" id="letter" role="region" aria-label="Letter message area">
+          <div class="letterHead">
+            <div class="toLine">
+              <span>To: <span style="color: color-mix(in oklab, var(--accent) 65%, var(--ink));">Stephanie Huno</span></span>
+              <small>(My Honor)</small>
+            </div>
+            <button class="sprinkleBtn" id="sprinkleBtn" type="button" aria-label="Sprinkle hearts">
+              Sprinkle ✨
+            </button>
+          </div>
+
+          <div class="letterBody" id="messageText">
+One thing I’ve always wanted to do when I finally have a woman is send random reassurance texts 🤭😂especially when I know she might be asleep and will wake up to read them😌, isn’t that cute 😂. I may not be there yet, but as a friend, like you Stephanie, I feel I can still tell you how I feel about you and how you make me feel.
+
+Honestly, we both know things haven’t been as smooth as they started or as I expected. But I completely understand. Individual differences, schedules, and moods can make things imperfect,especially when we’re not really in a relationship. And that’s okay. I’m at peace with the fact that we don’t have issues and we still talk whenever we want to😌.Just your little weird and straight replies bothers me sometimes 😒
+
+I truly appreciate you, especially during the tough times when I needed your presence. You were there. You showed up,even at night🥹😔. Those evenings we set aside just to meet, see you smile, and share laughter , I will always cherish those moments. If I’m being honest, I’d gladly ask for more of them if I could😔.
+
+You may never fully know how much those moments meant to me, especially for my mental health.
+Thank you so much. It’s an honour.
+I truly cherish your friendship,Stephanie . 💛
+My honor
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- 3) Video section -->
+      <section id="video">
+        <div class="sectionTitle">
+          <span>Video</span>
+          <span class="hint" aria-hidden="true">Remember this day?🎬</span>
+        </div>
+
+        <div class="videoFrame" role="region" aria-label="Video player">
+          <video id="vid" preload="metadata" playsinline>
+            <!-- Source will be set by JS (VIDEO_URL if provided else local video.mp4) -->
+          </video>
+
+          <div class="controls" aria-label="Video controls">
+            <button class="ctlBtn" id="playBtn" type="button" aria-label="Play" aria-pressed="false" title="Play/Pause">
+              <span class="sr-only">Play/Pause</span>
+              <svg id="playIcon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+            </button>
+
+            <button class="ctlBtn" id="muteBtn" type="button" aria-label="Mute" aria-pressed="false" title="Mute/Unmute">
+              <span class="sr-only">Mute</span>
+              <svg id="muteIcon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path d="M3 10v4h4l5 4V6L7 10H3z"></path>
+                <path id="soundWaves" d="M16 8.82a4 4 0 0 1 0 6.36M18.83 7a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+              </svg>
+            </button>
+
+            <div class="progressWrap">
+              <span class="time" id="timeNow" aria-label="Current time">0:00</span>
+
+              <div class="progress" id="progress" role="slider"
+                aria-label="Seek"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                tabindex="0"
+                style="--p: 0">
+              </div>
+
+              <span class="time" id="timeTotal" aria-label="Duration">0:00</span>
+            </div>
+
+            <button class="ctlBtn" id="fsBtn" type="button" aria-label="Fullscreen" title="Fullscreen">
+              <span class="sr-only">Fullscreen</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M16 3h3a2 2 0 0 1 2 2v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 21H5a2 2 0 0 1-2-2v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M16 21h3a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="caption">Our little moment 🫶</div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- 4) Closing section -->
+      <section class="closing" id="closing">
+        <div class="line">Always cheering for you,</div>
+        <div class="sig"><span class="miniHeart" aria-hidden="true"></span> SKY</div>
+        <footer>Made with love.</footer>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    /**
+     * Self-contained page JS
+     * - Theme toggle with localStorage
+     * - Smooth navigation
+     * - Heart/sparkle sprinkle burst (reduced when prefers-reduced-motion)
+     * - Custom video controls + Fullscreen API
+     * - VIDEO_URL support via query param or global window.VIDEO_URL (optional)
+     */
+
+    (function () {
+      "use strict";
+
+      const $ = (sel, root = document) => root.querySelector(sel);
+
+      // ---- Reduced motion preference ----
+      const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // If reduced motion, soften some decorative opacity
+      if (prefersReducedMotion) {
+        document.documentElement.style.setProperty("--float-opacity", "0.18");
+        document.documentElement.style.setProperty("--sparkle-opacity", "0.20");
+        // Disable smooth scroll in a robust way
+        document.documentElement.style.scrollBehavior = "auto";
+      }
+
+      // =========================================================
+      // Theme toggle (Day/Night) with localStorage
+      // =========================================================
+      const themeToggle = $("#themeToggle");
+      const themeLabel = $("#themeLabel");
+      const THEME_KEY = "cute_message_theme";
+
+      function applyTheme(mode) {
+        const html = document.documentElement;
+        if (mode === "night") {
+          html.setAttribute("data-theme", "night");
+          themeToggle.setAttribute("aria-pressed", "true");
+          themeLabel.textContent = "Night";
+        } else {
+          html.removeAttribute("data-theme");
+          themeToggle.setAttribute("aria-pressed", "false");
+          themeLabel.textContent = "Day";
+        }
+      }
+
+      const savedTheme = localStorage.getItem(THEME_KEY);
+      applyTheme(savedTheme === "night" ? "night" : "day");
+
+      themeToggle.addEventListener("click", () => {
+        const isNight = document.documentElement.getAttribute("data-theme") === "night";
+        const next = isNight ? "day" : "night";
+        applyTheme(next);
+        localStorage.setItem(THEME_KEY, next);
+      });
+
+      // =========================================================
+      // Navigation buttons
+      // =========================================================
+      const openMsg = $("#openMsg");
+      const skipToVideo = $("#skipToVideo");
+
+      function scrollToId(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
+      }
+
+      openMsg.addEventListener("click", () => scrollToId("message"));
+      skipToVideo.addEventListener("click", () => scrollToId("video"));
+
+      // =========================================================
+      // Sprinkle hearts burst
+      // =========================================================
+      const letter = $("#letter");
+      const sprinkleBtn = $("#sprinkleBtn");
+
+      function rand(min, max) { return Math.random() * (max - min) + min; }
+
+      function makeParticle(x, y, kind = "heart") {
+        const el = document.createElement("div");
+        el.className = "particle" + (kind === "spark" ? " spark" : "");
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+        return el;
+      }
+
+      function burstAt(x, y) {
+        // Reduced motion: smaller, fewer particles
+        const count = prefersReducedMotion ? 6 : 14;
+        const spread = prefersReducedMotion ? 36 : 70;
+        const life = prefersReducedMotion ? 520 : 900;
+
+        const container = document.createElement("div");
+        container.className = "burst";
+        document.body.appendChild(container);
+
+        for (let i = 0; i < count; i++) {
+          const kind = (Math.random() < 0.22) ? "spark" : "heart";
+          const p = makeParticle(x, y, kind);
+          container.appendChild(p);
+
+          const angle = rand(0, Math.PI * 2);
+          const dist = rand(spread * 0.35, spread);
+          const dx = Math.cos(angle) * dist;
+          const dy = Math.sin(angle) * dist - rand(6, 22); // upward bias
+          const rot = rand(-28, 28);
+          const scale = rand(0.75, 1.25);
+
+          // Animate with WAAPI (falls back gracefully)
+          const keyframes = [
+            { transform: `translate(-50%,-50%) translate(0px,0px) rotate(0deg) scale(${scale})`, opacity: 0 },
+            { opacity: 0.95, offset: 0.12 },
+            { transform: `translate(-50%,-50%) translate(${dx}px,${dy}px) rotate(${rot}deg) scale(${scale})`, opacity: 0 }
+          ];
+
+          const anim = p.animate(keyframes, {
+            duration: life + rand(-120, 160),
+            easing: "cubic-bezier(.2,.8,.2,1)",
+            fill: "forwards"
+          });
+
+          anim.onfinish = () => p.remove();
+        }
+
+        // Cleanup container after animation
+        setTimeout(() => container.remove(), prefersReducedMotion ? 700 : 1100);
+      }
+
+      function pointerPositionFromEvent(e) {
+        if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        return { x: e.clientX, y: e.clientY };
+      }
+
+      letter.addEventListener("click", (e) => {
+        // Don't double-trigger when clicking the sprinkle button
+        if (e.target === sprinkleBtn || sprinkleBtn.contains(e.target)) return;
+        const { x, y } = pointerPositionFromEvent(e);
+        if (!prefersReducedMotion) burstAt(x, y);
+        else burstAt(x, y); // still minimal
+      });
+
+      sprinkleBtn.addEventListener("click", (e) => {
+        const rect = sprinkleBtn.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        burstAt(x, y);
+        e.stopPropagation();
+      });
+
+      // Keyboard support: Enter/Space on the letter area (when focused via tab)
+      letter.setAttribute("tabindex", "0");
+      letter.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          const rect = letter.getBoundingClientRect();
+          burstAt(rect.left + rect.width * 0.5, rect.top + rect.height * 0.35);
+          e.preventDefault();
+        }
+      });
+
+      // =========================================================
+      // Video source selection: supports BOTH online URL + local video.mp4
+      // Priority:
+      // 1) query param ?video=...
+      // 2) window.VIDEO_URL (if you set it inside the HTML before this script)
+      // 3) literal [VIDEO_URL] placeholder (treated as "not provided")
+      // 4) default "video.mp4" local next to this HTML
+      // =========================================================
+      const vid = $("#vid");
+
+      function getVideoUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const qp = params.get("video");
+        if (qp && qp.trim()) return qp.trim();
+
+        // optional global
+        if (typeof window.VIDEO_URL === "string" && window.VIDEO_URL.trim()) return window.VIDEO_URL.trim();
+
+        // If user left placeholder, ignore it.
+        const placeholder = "[VIDEO_URL]";
+        if (placeholder && placeholder !== "[VIDEO_URL]" && placeholder.trim()) return placeholder.trim();
+
+        return "video.mp4";
+      }
+
+      const videoSrc = getVideoUrl();
+      const srcEl = document.createElement("source");
+      srcEl.src = videoSrc;
+      srcEl.type = "video/mp4";
+      vid.appendChild(srcEl);
+
+      // Friendly fallback message if video can't load
+      vid.insertAdjacentHTML("afterend", `
+        <p class="sr-only" id="videoFallback">
+          If the video doesn't load, ensure the file is named "video.mp4" next to this HTML, or provide a ?video=URL parameter.
+        </p>
+      `);
+      vid.setAttribute("aria-describedby", "videoFallback");
+
+      // =========================================================
+      // Custom video controls
+      // =========================================================
+      const playBtn = $("#playBtn");
+      const playIcon = $("#playIcon");
+      const muteBtn = $("#muteBtn");
+      const muteIcon = $("#muteIcon");
+      const soundWaves = $("#soundWaves");
+      const progress = $("#progress");
+      const timeNow = $("#timeNow");
+      const timeTotal = $("#timeTotal");
+      const fsBtn = $("#fsBtn");
+
+      function fmtTime(sec) {
+        if (!Number.isFinite(sec)) return "0:00";
+        sec = Math.max(0, sec);
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${m}:${String(s).padStart(2, "0")}`;
+      }
+
+      function setPlayingUI(isPlaying) {
+        playBtn.setAttribute("aria-pressed", isPlaying ? "true" : "false");
+        playBtn.setAttribute("aria-label", isPlaying ? "Pause" : "Play");
+        // Switch icon
+        if (isPlaying) {
+          playIcon.innerHTML = '<path d="M7 6h4v12H7zM13 6h4v12h-4z"></path>';
+        } else {
+          playIcon.innerHTML = '<path d="M8 5v14l11-7z"></path>';
+        }
+      }
+
+      function setMutedUI(isMuted) {
+        muteBtn.setAttribute("aria-pressed", isMuted ? "true" : "false");
+        muteBtn.setAttribute("aria-label", isMuted ? "Unmute" : "Mute");
+        // Show/hide waves
+        if (soundWaves) soundWaves.style.opacity = isMuted ? "0" : "1";
+        // Add slash when muted
+        if (isMuted) {
+          muteIcon.innerHTML = `
+            <path d="M3 10v4h4l5 4V6L7 10H3z"></path>
+            <path d="M16 9l5 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M21 9l-5 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          `;
+        } else {
+          muteIcon.innerHTML = `
+            <path d="M3 10v4h4l5 4V6L7 10H3z"></path>
+            <path id="soundWaves" d="M16 8.82a4 4 0 0 1 0 6.36M18.83 7a7 7 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          `;
+        }
+      }
+
+      function updateProgress() {
+        const dur = vid.duration || 0;
+        const cur = vid.currentTime || 0;
+        const p = dur > 0 ? (cur / dur) : 0;
+        progress.style.setProperty("--p", String(Math.min(1, Math.max(0, p))));
+        progress.setAttribute("aria-valuenow", String(Math.round(p * 100)));
+        timeNow.textContent = fmtTime(cur);
+        timeTotal.textContent = fmtTime(dur);
+      }
+
+      async function togglePlay() {
+        if (vid.paused || vid.ended) {
+          try {
+            await vid.play();
+          } catch (err) {
+            // If autoplay restrictions or other issues occur, ignore.
+          }
+        } else {
+          vid.pause();
+        }
+      }
+
+      function toggleMute() {
+        vid.muted = !vid.muted;
+        setMutedUI(vid.muted);
+      }
+
+      function seekToClientX(clientX) {
+        const rect = progress.getBoundingClientRect();
+        const x = Math.min(rect.right, Math.max(rect.left, clientX));
+        const ratio = (x - rect.left) / rect.width;
+        if (Number.isFinite(vid.duration) && vid.duration > 0) {
+          vid.currentTime = ratio * vid.duration;
+        }
+      }
+
+      // Button events
+      playBtn.addEventListener("click", togglePlay);
+      muteBtn.addEventListener("click", toggleMute);
+
+      // Video events
+      vid.addEventListener("play", () => setPlayingUI(true));
+      vid.addEventListener("pause", () => setPlayingUI(false));
+      vid.addEventListener("timeupdate", updateProgress);
+      vid.addEventListener("loadedmetadata", updateProgress);
+      vid.addEventListener("durationchange", updateProgress);
+      vid.addEventListener("volumechange", () => setMutedUI(vid.muted));
+
+      // Progress click + drag
+      let dragging = false;
+
+      progress.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        progress.setPointerCapture(e.pointerId);
+        seekToClientX(e.clientX);
+      });
+
+      progress.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        seekToClientX(e.clientX);
+      });
+
+      progress.addEventListener("pointerup", () => dragging = false);
+      progress.addEventListener("pointercancel", () => dragging = false);
+
+      // Progress keyboard (left/right/home/end)
+      progress.addEventListener("keydown", (e) => {
+        if (!Number.isFinite(vid.duration) || vid.duration <= 0) return;
+        const step = (e.shiftKey ? 10 : 5); // seconds
+        if (e.key === "ArrowLeft") {
+          vid.currentTime = Math.max(0, vid.currentTime - step);
+          e.preventDefault();
+        } else if (e.key === "ArrowRight") {
+          vid.currentTime = Math.min(vid.duration, vid.currentTime + step);
+          e.preventDefault();
+        } else if (e.key === "Home") {
+          vid.currentTime = 0;
+          e.preventDefault();
+        } else if (e.key === "End") {
+          vid.currentTime = vid.duration;
+          e.preventDefault();
+        } else if (e.key === " " || e.key === "Enter") {
+          // toggle play from slider too
+          togglePlay();
+          e.preventDefault();
+        }
+      });
+
+      // Click video toggles play (nice UX)
+      vid.addEventListener("click", togglePlay);
+
+      // Fullscreen
+      fsBtn.addEventListener("click", async () => {
+        const frame = $(".videoFrame");
+        try {
+          if (!document.fullscreenElement) {
+            await frame.requestFullscreen();
+          } else {
+            await document.exitFullscreen();
+          }
+        } catch (err) {
+          // Ignore if not supported.
+        }
+      });
+
+      // Initialize UI states
+      setPlayingUI(false);
+      setMutedUI(vid.muted);
+
+      // =========================================================
+      // Tiny polish: entrance reveals per section (already via CSS)
+      // and ensure floaters are minimal for reduced motion
+      // =========================================================
+      if (prefersReducedMotion) {
+        // Remove some floaters to keep things calmer
+        const floaters = document.getElementById("floaters");
+        if (floaters) {
+          const nodes = Array.from(floaters.children);
+          nodes.slice(3).forEach(n => n.remove());
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
